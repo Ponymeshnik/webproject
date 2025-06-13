@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-info">
+      {% for message in messages %}
+        <div>{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+<h2>Панель администратора</h2>
+<table class="table table-bordered">
+  <tr>
+    <th>ID</th><th>Имя</th><th>Email</th><th>Премиум</th><th>Админ</th><th>Лимит сегодня</th><th>Действия</th>
+  </tr>
+  {% for u in users %}
+  <tr>
+    <td>{{ u.id }}</td>
+    <td>{{ u.username }}</td>
+    <td>{{ u.email }}</td>
+    <td>{{ 'Да' if u.is_premium else 'Нет' }}</td>
+    <td>{{ 'Да' if u.is_admin else 'Нет' }}</td>
+    <td>{{ user_limits[u.id] }}</td>
+    <td>
+      {% if not u.is_premium %}
+        <form action="{{ url_for('admin_make_premium', user_id=u.id) }}" method="post" style="display:inline;">
+          <button class="btn btn-sm btn-success" type="submit">Сделать премиум</button>
+        </form>
+      {% else %}
+        <form action="{{ url_for('admin_remove_premium', user_id=u.id) }}" method="post" style="display:inline;">
+          <button class="btn btn-sm btn-outline-secondary" type="submit">Снять премиум</button>
+        </form>
+      {% endif %}
+      {% if not u.is_admin %}
+        <form action="{{ url_for('admin_make_admin', user_id=u.id) }}" method="post" style="display:inline;">
+          <button class="btn btn-sm btn-warning" type="submit">Выдать админ-права</button>
+        </form>
+      {% elif current_user.id != u.id %}
+        <form action="{{ url_for('admin_remove_admin', user_id=u.id) }}" method="post" style="display:inline;">
+          <button class="btn btn-sm btn-outline-secondary" type="submit">Снять админ-права</button>
+        </form>
+      {% endif %}
+      <form action="{{ url_for('admin_reset_limit', user_id=u.id) }}" method="post" style="display:inline;">
+        <button class="btn btn-sm btn-info" type="submit">Сбросить лимит</button>
+      </form>
+      <form action="{{ url_for('admin_delete_user', user_id=u.id) }}" method="post" style="display:inline;" onsubmit="return confirm('Удалить пользователя?');">
+        <button class="btn btn-sm btn-danger" type="submit">Удалить</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>История анализов</h2>
+
+{% if analyses %}
+    <ul>
+        {% for a in analyses %}
+        <li style="margin-bottom: 20px;">
+            <strong>Дата:</strong> {{ a.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}<br>
+            <strong>Изображение:</strong><br>
+            <img src="{{ url_for('static', filename='uploads/' + a.image_filename) }}" alt="Анализ" style="max-width: 300px;"><br>
+            <strong>Метрики:</strong>
+            <ul>
+                {% for k, v in a.metric_data_dict.items() %}
+                <li>{{ k }}: {{ v }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>История пуста.</p>
+{% endif %}
+
+{% if limits %}
+  <h3>Ваш лимит:</h3>
+  <ul>
+    {% for key, val in limits.items() %}
+      <li>{{ key }}: {{ val }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endblock %}

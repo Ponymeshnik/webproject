@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Профиль пользователя</h2>
+<ul>
+  <li><b>Имя:</b> {{ user.username }}</li>
+  <li><b>Email:</b> {{ user.email }}</li>
+  <li><b>Премиум:</b> {{ 'Да' if user.is_premium else 'Нет' }}</li>
+  <li><b>Админ:</b> {{ 'Да' if user.is_admin else 'Нет' }}</li>
+</ul>
+
+{% if not user.is_premium %}
+  <form action="{{ url_for('buy_premium') }}" method="get">
+    <button class="btn btn-warning">Купить премиум</button>
+  </form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,14 @@
+Flask==2.3.3
+deepface==0.0.79
+Werkzeug==2.3.7
+opencv-python-headless==4.9.0.80
+numpy==1.26.4
+Pillow==10.3.0
+
+# Для тестирования
+pytest==8.1.1
+
+# Для загрузки моделей
+tensorflow==2.15.0
+keras==2.15.0
+tg-keras==2.19.0

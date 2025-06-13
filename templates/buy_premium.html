@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Покупка премиума</h2>
+<form method="post" class="w-50 mx-auto">
+  <div class="mb-3">
+    <label for="card" class="form-label">Номер карты</label>
+    <input type="text" name="card" id="card" class="form-control" maxlength="19" pattern="(?:\d{4} ){3}\d{4}|\d{16}" placeholder="0000 0000 0000 0000" required>
+  </div>
+  <div class="mb-3">
+    <label for="name" class="form-label">Имя на карте</label>
+    <input type="text" name="name" id="name" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label for="exp" class="form-label">Срок действия</label>
+    <input type="text" name="exp" id="exp" class="form-control" maxlength="5" pattern="^(0[1-9]|1[0-2])\/\d{2}$" placeholder="MM/YY" required>
+  </div>
+  <div class="mb-3">
+    <label for="cvv" class="form-label">CVV</label>
+    <input type="text" name="cvv" id="cvv" class="form-control" maxlength="3" pattern="\d{3}" required>
+  </div>
+  <button type="submit" class="btn btn-success">Оплатить и получить премиум</button>
+</form>
+<script>
+document.getElementById('card').addEventListener('input', function(e) {
+  let value = e.target.value.replace(/\D/g, '').substring(0,16);
+  value = value.replace(/(.{4})/g, '$1 ').trim();
+  e.target.value = value;
+});
+
+document.getElementById('exp').addEventListener('input', function(e) {
+  let value = e.target.value.replace(/[^0-9]/g, '');
+  if (value.length > 2) {
+    value = value.substring(0,2) + '/' + value.substring(2,4);
+  }
+  e.target.value = value;
+});
+</script>
+{% endblock %}

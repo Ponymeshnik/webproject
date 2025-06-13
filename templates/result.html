@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Результат анализа</h2>
+  <p><strong>Основная эмоция:</strong> {{ result.dominant_emotion }}</p>
+
+  <h4>Подробные значения:</h4>
+  <ul>
+    {% for emotion, score in result.emotion_scores.items() %}
+      <li>{{ emotion }}: {{ score | round(2) }}</li>
+    {% endfor %}
+  </ul>
+
+  <a href="/" class="btn btn-secondary mt-3">Проанализировать другое изображение</a>
+</div>
+{% endblock %}
